@@ -83,20 +83,8 @@ hdiutil convert "${DMG_BUILD_PATH}/${DMG_NAME}.temp.dmg" -format UDBZ -o "${DMG_
 rm -rf "${DISTTEMP}"
 rm "${DMG_BUILD_PATH}/${DMG_NAME}.temp.dmg"
 
-# Ask for the location of the private key to use when signing the disk image
-PRIVATE_KEY_LOCATION=`osascript <<-eof
-	tell application "Xcode"
-	set theKey to POSIX path of ((choose file with prompt "Please locate the private key (sequelpro-sparkle-private-key.pem) for signing:" ) as string) 
-	end tell
-	theKey
-	eof`
-if [ -e "$PRIVATE_KEY_LOCATION" ]
-then
-	SIGNATURE=`openssl dgst -sha1 -binary < "${DMG_BUILD_PATH}/${DMG_NAME}.dmg" | openssl dgst -dss1 -sign "$PRIVATE_KEY_LOCATION" | openssl enc -base64`
-	echo "$SIGNATURE" > "${DMG_BUILD_PATH}/${DMG_NAME}.dmg.signature"
-fi
 
-echo "Disk image created at ${DMG_BUILD_PATH}/${DMG_NAME}.dmg and signature placed next to it"
+echo "Disk image created at ${DMG_BUILD_PATH}/${DMG_NAME}.dmg"
 open -R "${DMG_BUILD_PATH}"
 
 exit 0

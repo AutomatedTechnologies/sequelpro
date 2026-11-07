@@ -77,7 +77,7 @@
 			[self exportOperation];
 		}
 		@catch(NSException *e) {
-			[[NSApp onMainThread] reportException:e]; // will be caught by FeedbackReporter
+			NSLog(@"Export operation failed with exception: %@", e);
 		}
 	}
 }

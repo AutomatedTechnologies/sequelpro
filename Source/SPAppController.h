@@ -29,9 +29,6 @@
 //
 //  More info at <https://github.com/sequelpro/sequelpro>
 
-#ifndef SP_CODA
-#import <FeedbackReporter/FRFeedbackReporter.h>
-#endif
 
 @class SPPreferenceController;
 @class SPAboutController;
@@ -39,7 +36,7 @@
 @class SPBundleEditorController;
 @class SPWindowController;
 
-@interface SPAppController : NSObject <FRFeedbackReporterDelegate, NSApplicationDelegate, NSOpenSavePanelDelegate, NSFileManagerDelegate>
+@interface SPAppController : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate, NSFileManagerDelegate>
 {
 	SPAboutController *aboutController;
 	SPPreferenceController *prefsController;
@@ -95,9 +92,6 @@
 
 - (void)setSessionURL:(NSString *)urlString;
 - (void)setSpfSessionDocData:(NSDictionary *)data;
-
-// Feedback controller delegate methods
-- (NSMutableDictionary *)anonymizePreferencesForFeedbackReport:(NSMutableDictionary *)preferences;
 
 // Others
 - (NSArray *)bundleCategoriesForScope:(NSString *)scope;

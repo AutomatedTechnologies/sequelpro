@@ -279,7 +279,6 @@ NSString *SPPreferenceToolbarGeneral             = @"SPPreferenceToolbarGeneral"
 NSString *SPPreferenceToolbarTables              = @"SPPreferenceToolbarTables";
 NSString *SPPreferenceToolbarFavorites           = @"SPPreferenceToolbarFavorites";
 NSString *SPPreferenceToolbarNotifications       = @"SPPreferenceToolbarNotifications";
-NSString *SPPreferenceToolbarAutoUpdate          = @"SPPreferenceToolbarAutoUpdate";
 NSString *SPPreferenceToolbarNetwork             = @"SPPreferenceToolbarNetwork";
 NSString *SPPreferenceToolbarEditor              = @"SPPreferenceToolbarEditor";
 NSString *SPPreferenceToolbarShortcuts           = @"SPPreferenceToolbarShortcuts";

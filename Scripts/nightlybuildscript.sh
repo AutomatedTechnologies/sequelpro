@@ -147,7 +147,6 @@ php -r '$infoplistloc = "'$BUILD_DIR'/Sequel Pro.app/Contents/Info.plist";
 	$infoplist = file_get_contents($infoplistloc);
 	$infoplist = preg_replace("/(\<key\>CFBundleShortVersionString\<\/key\>\s*\n?\r?\s*\<string\>)[^<]*(\<\/string\>)/i", "\\1Nightly build for revision '$SHORT_HASH'\\2", $infoplist);
 	$infoplist = preg_replace("/(\<key\>CFBundleVersion\<\/key\>\s*\n?\r?\s*)\<string\>[^<]*(\<\/string\>)/i", "\\1<string>'$NUMERIC_REVISION'\\2", $infoplist);
-	$infoplist = preg_replace("/(\<key\>SUFeedURL\<\/key\>\s*\n?\r?\s*\<string\>)[^<]*(\<\/string\>)/i", "\\1https://sequelpro.com/nightly/nightly-app-releases.php\\2", $infoplist);
 	file_put_contents($infoplistloc, $infoplist);'
 
 # Update versions in localised string files

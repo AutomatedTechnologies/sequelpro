@@ -484,7 +484,6 @@ extern NSString *SPPreferenceToolbarGeneral;
 extern NSString *SPPreferenceToolbarTables;
 extern NSString *SPPreferenceToolbarFavorites;
 extern NSString *SPPreferenceToolbarNotifications;
-extern NSString *SPPreferenceToolbarAutoUpdate;
 extern NSString *SPPreferenceToolbarNetwork;
 extern NSString *SPPreferenceToolbarEditor;
 extern NSString *SPPreferenceToolbarShortcuts;

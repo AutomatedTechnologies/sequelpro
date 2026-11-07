@@ -184,10 +184,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string></string>
-	<key>FRFeedbackReporter.maxConsoleLogSize</key>
-	<integer>10000</integer>
-	<key>FRFeedbackReporter.targetURL</key>
-	<string>https://sequelpro.com/api?action=feedback-submit</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
@@ -260,12 +256,6 @@
 	<string></string>
 	<key>SPVersionShortHash</key>
 	<string></string>
-	<key>SUEnableSystemProfiling</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://sequelpro.com/appcast/app-releases.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>sparkle-public-key.pem</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
