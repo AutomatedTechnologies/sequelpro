@@ -154,7 +154,7 @@
 	<key>CFBundleIconFile</key>
 	<string>appIcon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sequelpro.SequelPro</string>
+	<string>com.detroitautomationacademy.sequelpro</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -366,5 +366,18 @@
 			</dict>
 		</dict>
 	</array>
+	<key>com.detroitautomationacademy.audit</key>
+	<dict>
+		<key>Disassembled</key>
+		<true/>
+		<key>Scanned</key>
+		<true/>
+		<key>Recompiled</key>
+		<true/>
+		<key>Authority</key>
+		<string>Detroit Automation Academy</string>
+		<key>Date</key>
+		<string>2026-11-08</string>
+	</dict>
 </dict>
 </plist>

@@ -1,0 +1,74 @@
+name: Sequel Pro Academy RC build
+
+on:
+  push:
+    branches: [build-test]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Report Xcode and SDK
+        run: |
+          xcodebuild -version
+          xcrun --show-sdk-path
+          xcodebuild -showsdks
+
+      - name: List schemes (sanity)
+        run: |
+          xcodebuild -project sequel-pro.xcodeproj -list
+
+      - name: Build Sequel Pro (Release, unsigned, 10.13 floor, x86_64)
+        run: |
+          set -o pipefail
+          xcodebuild -project sequel-pro.xcodeproj -scheme "Sequel Pro" \
+            -configuration Release \
+            -derivedDataPath ./DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            MACOSX_DEPLOYMENT_TARGET=10.13 \
+            ARCHS=x86_64 ONLY_ACTIVE_ARCH=NO \
+            build 2>&1 | tee xcodebuild.log
+
+      - name: Upload full xcodebuild log (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log
+          if-no-files-found: warn
+
+      - name: Package app as zip
+        if: success()
+        run: |
+          APP=$(find ./DerivedData -name 'Sequel Pro.app' -path '*Release*' | grep -v '\.dSYM' | head -1)
+          echo "Built app: $APP"
+          test -n "$APP"
+          test -x "$APP/Contents/MacOS/Sequel Pro"
+          file "$APP/Contents/MacOS/Sequel Pro"
+          ditto -c -k --keepParent "$APP" SequelPro-test.zip
+          ls -la SequelPro-test.zip
+          shasum -a 256 SequelPro-test.zip
+
+      - name: Upload test build zip (survival copy)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequelpro-test-zip
+          path: SequelPro-test.zip
+
+      - name: Publish prerelease with test build
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create sequelpro-test-${{ github.run_number }} SequelPro-test.zip \
+            --prerelease \
+            --title "Sequel Pro — first Academy release candidate (test build ${{ github.run_number }})" \
+            --notes "First Academy CI build of Sequel Pro. Academy bundle ID com.detroitautomationacademy.sequelpro + Academy audit entry in the app Info.plist. Updater (Sparkle 1.5-beta) and FeedbackReporter removed. NOT rig-verified on High Sierra. Known limitation: MySQL connector is the bundled EOL 5.5.56 client — no caching_sha2_password; swap to MariaDB Connector/C is a later tranche (T4). Findings F-01/F-02/F-03 remain OPEN — this build closes nothing. NOT A RELEASE."
