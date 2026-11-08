@@ -60,6 +60,19 @@ jobs:
           path: xcodebuild.log
           if-no-files-found: warn
 
+      - name: Stamp CFBundleVersion + bundle Academy IP texts (T2)
+        if: success()
+        run: |
+          APP=$(find ./DerivedData -name 'Sequel Pro.app' -path '*Release*' | grep -v '\.dSYM' | head -1)
+          echo "Stamping app: $APP"
+          test -n "$APP"
+          PLIST="$APP/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Delete :CFBundleVersion" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string sequelpro-test-${{ github.run_number }}" "$PLIST"
+          cp LICENSE-ACADEMY.txt NOTICE.txt "$APP/Contents/Resources/"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST"
+          ls -la "$APP/Contents/Resources/LICENSE-ACADEMY.txt" "$APP/Contents/Resources/NOTICE.txt"
+
       - name: Package app as zip
         if: success()
         run: |
