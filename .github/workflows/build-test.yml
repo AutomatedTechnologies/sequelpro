@@ -25,6 +25,21 @@ jobs:
         run: |
           xcodebuild -project sequel-pro.xcodeproj -list
 
+      - name: Apply CI source patch (SPLogger struct direct -> dirent)
+        run: |
+          # SPLogger.m uses the pre-modern `struct direct` spelling (3 sites:
+          # decl, local var, definition). The macOS 15 SDK no longer defines
+          # struct direct; struct dirent is the same type on 10.13 and modern
+          # SDKs. Patch is applied to the checked-out working tree only,
+          # guarded: fails unless exactly 3 sites before and 0 remain after.
+          F="Source/SPLogger.m"
+          BEFORE=$(grep -c 'struct direct' "$F")
+          perl -pi -e 's/\bstruct direct\b/struct dirent/g' "$F"
+          AFTER=$(grep -c 'struct dirent' "$F" || true)
+          LEFT=$(grep -c 'struct direct' "$F" || true)
+          echo "SPLogger.m CI patch: sites_before=$BEFORE dirent_after=$AFTER leftover=$LEFT"
+          test "$BEFORE" = "3" && test "$AFTER" = "3" && test "$LEFT" = "0"
+
       - name: Build Sequel Pro (Release, unsigned, 10.13 floor, x86_64)
         run: |
           set -o pipefail
