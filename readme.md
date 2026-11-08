@@ -1,3 +1,5 @@
+> **Academy fork — Detroit Automation Academy.** This repository is a fork of [sequelpro/sequelpro](https://github.com/sequelpro/sequelpro) (MIT, Copyright (c) 2002-2019 Sequel Pro & CocoaMySQL Teams), maintained by the Detroit Automation Academy for macOS High Sierra 10.13 under its Legacy Uplift Program. See `PROVENANCE.md` for the full provenance record (upstream, original authors, license, and fork point). This fork is not endorsed by the original Sequel Pro project.
+
 Sequel Pro <img alt="Logo" src="https://sequelpro.com/images/logo.png" align="right" height="50">
 =======
 
