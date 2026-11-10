@@ -32,6 +32,7 @@
 
 @class SPPreferenceController;
 @class SPAboutController;
+@class SPWelcomeController;
 @class SPDatabaseDocument;
 @class SPBundleEditorController;
 @class SPWindowController;
@@ -39,6 +40,7 @@
 @interface SPAppController : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate, NSFileManagerDelegate>
 {
 	SPAboutController *aboutController;
+	SPWelcomeController *welcomeController;
 	SPPreferenceController *prefsController;
 	SPBundleEditorController *bundleEditorController;
 

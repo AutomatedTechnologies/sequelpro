@@ -34,6 +34,7 @@
 #import "SPDatabaseDocument.h"
 #import "SPPreferenceController.h"
 #import "SPAboutController.h"
+#import "SPWelcomeController.h"
 #import "SPDataImport.h"
 #import "SPEncodingPopupAccessory.h"
 #import "SPWindowController.h"
@@ -148,6 +149,15 @@
  */
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+	// SDS-8 welcome screen (SDS10-T4): presented at launch, before
+	// use — AppIcon composition, runtime-read version line, and the
+	// standard startup sound (SPWelcomeController). Non-blocking:
+	// the document flow below is unchanged.
+	if (!welcomeController) {
+		welcomeController = [[SPWelcomeController alloc] init];
+	}
+	[welcomeController showWindow:self];
+
 	NSDictionary *spfDict = nil;
 	NSArray *args = [[NSProcessInfo processInfo] arguments];
 	if (args.count == 5) {

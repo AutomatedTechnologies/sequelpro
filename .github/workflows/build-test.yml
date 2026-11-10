@@ -71,6 +71,11 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string sequelpro-test-${{ github.run_number }}" "$PLIST"
           cp LICENSE-ACADEMY.txt NOTICE.txt "$APP/Contents/Resources/"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.audit" "$PLIST"
+          test -f "$APP/Contents/Resources/startup-sound.wav"
+          shasum -a 256 "$APP/Contents/Resources/startup-sound.wav"
+          test "$(shasum -a 256 "$APP/Contents/Resources/startup-sound.wav" | awk '{print $1}')" = "07a113244c6b432b22954a089ce519bd239311b14a48f26ae85214ed8c25b09a"
           ls -la "$APP/Contents/Resources/LICENSE-ACADEMY.txt" "$APP/Contents/Resources/NOTICE.txt"
 
       - name: Package app as zip
@@ -99,5 +104,5 @@ jobs:
         run: |
           gh release create sequelpro-test-${{ github.run_number }} SequelPro-test.zip \
             --prerelease \
-            --title "Sequel Pro — first Academy release candidate (test build ${{ github.run_number }})" \
-            --notes "First Academy CI build of Sequel Pro. Academy bundle ID com.detroitautomationacademy.sequelpro + Academy audit entry in the app Info.plist. Updater (Sparkle 1.5-beta) and FeedbackReporter removed. NOT rig-verified on High Sierra. Known limitation: MySQL connector is the bundled EOL 5.5.56 client — no caching_sha2_password; swap to MariaDB Connector/C is a later tranche (T4). Findings F-01/F-02/F-03 remain OPEN — this build closes nothing. NOT A RELEASE."
+            --title "Sequel Pro — Academy test build ${{ github.run_number }} (SDS10-T4 conformance)" \
+            --notes "SDS10-T4 conformance build: SDS-8 welcome screen (SPWelcomeController — AppIcon composition, version line runtime-read from the bundle Info.plist CFBundleVersion) + byte-identical startup-sound.wav (SHA-256 07a113244c6b432b22954a089ce519bd239311b14a48f26ae85214ed8c25b09a) + com.detroitautomationacademy.conformance key (SDS-10: Logo/VersionAtStartup/StartupSound/MenuBar all true). Academy bundle ID com.detroitautomationacademy.sequelpro + complete Academy audit entry in the app Info.plist. Database layer unchanged in this tranche. NOT rig-verified on High Sierra. Known limitation: MySQL connector is the bundled EOL 5.5.56 client — no caching_sha2_password. Findings F-01/F-02/F-03 remain OPEN. NOT A RELEASE."

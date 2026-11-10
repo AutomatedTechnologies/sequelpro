@@ -88,6 +88,8 @@
 		17B5487B1E82B02100175D5A /* button_select_none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B548701E82B02100175D5A /* button_select_none@2x.png */; };
 		17C058880FC9FC390077E9CF /* SPNarrowDownCompletion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C058870FC9FC390077E9CF /* SPNarrowDownCompletion.m */; };
 		17CC97F310B4ABE90034CD7A /* SPAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17CC97F210B4ABE90034CD7A /* SPAboutController.m */; };
+		AA1000032611100000000001 /* SPWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1000022611100000000001 /* SPWelcomeController.m */; };
+		AA1000052611100000000001 /* startup-sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = AA1000042611100000000001 /* startup-sound.wav */; };
 		17CC97F710B4AC6C0034CD7A /* AboutPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17CC97F510B4AC6C0034CD7A /* AboutPanel.xib */; };
 		17CC993B10B4C9C80034CD7A /* License.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17CC993A10B4C9C80034CD7A /* License.rtf */; };
 		17D38F701279E23A00672B13 /* SPTableFieldValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D38F6F1279E23A00672B13 /* SPTableFieldValidation.m */; };
@@ -752,6 +754,9 @@
 		17C058870FC9FC390077E9CF /* SPNarrowDownCompletion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPNarrowDownCompletion.m; sourceTree = "<group>"; };
 		17CC97F110B4ABE90034CD7A /* SPAboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAboutController.h; sourceTree = "<group>"; };
 		17CC97F210B4ABE90034CD7A /* SPAboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAboutController.m; sourceTree = "<group>"; };
+		AA1000012611100000000001 /* SPWelcomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPWelcomeController.h; sourceTree = "<group>"; };
+		AA1000022611100000000001 /* SPWelcomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPWelcomeController.m; sourceTree = "<group>"; };
+		AA1000042611100000000001 /* startup-sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "startup-sound.wav"; sourceTree = "<group>"; };
 		17CC97F610B4AC6C0034CD7A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Interfaces/English.lproj/AboutPanel.xib; sourceTree = "<group>"; };
 		17CC993A10B4C9C80034CD7A /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
 		17D38F6E1279E23A00672B13 /* SPTableFieldValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPTableFieldValidation.h; sourceTree = "<group>"; };
@@ -1902,6 +1907,7 @@
 				584756F7120A1B0B0057631F /* QuickLook Plugin */,
 				17F90E2B1210B34900274C98 /* Credits.rtf */,
 				17CC993A10B4C9C80034CD7A /* License.rtf */,
+				AA1000042611100000000001 /* startup-sound.wav */,
 				17E641F50EF02088001BC333 /* Growl Registration Ticket.growlRegDict */,
 			);
 			path = Resources;
@@ -1912,6 +1918,8 @@
 			children = (
 				17E6414A0EF01EF6001BC333 /* SPAppController.h */,
 				17E6414B0EF01EF6001BC333 /* SPAppController.m */,
+				AA1000012611100000000001 /* SPWelcomeController.h */,
+				AA1000022611100000000001 /* SPWelcomeController.m */,
 				17D3583C1533766800A654D7 /* Window */,
 				173567BA12AC1306000DCCEF /* Bundle Support */,
 				173E70A6107FF61D008733C9 /* Main View Controllers */,
@@ -2953,6 +2961,7 @@
 				C9AD7C8B1676204300234EEE /* button_info_pane_show.png in Resources */,
 				C9AD7C8C1676204300234EEE /* button_info_pane_show@2x.png in Resources */,
 				58FEEF3D1676D14B009CD478 /* appIcon.icns in Resources */,
+				AA1000052611100000000001 /* startup-sound.wav in Resources */,
 				17B5487A1E82B02100175D5A /* button_select_all@2x.png in Resources */,
 				58FEEF451676D160009CD478 /* Generic.icns in Resources */,
 				58FEEF461676D160009CD478 /* SPF.icns in Resources */,
@@ -3143,6 +3152,7 @@
 				17E641460EF01EB5001BC333 /* main.m in Sources */,
 				17E641560EF01EF6001BC333 /* SPCustomQuery.m in Sources */,
 				17E641570EF01EF6001BC333 /* SPAppController.m in Sources */,
+				AA1000032611100000000001 /* SPWelcomeController.m in Sources */,
 				507FF1121BBCC57600104523 /* SPFunctions.m in Sources */,
 				17E641580EF01EF6001BC333 /* SPGrowlController.m in Sources */,
 				17E641590EF01EF6001BC333 /* SPTableContent.m in Sources */,
