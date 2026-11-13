@@ -110,7 +110,7 @@
 		17E641460EF01EB5001BC333 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E641440EF01EB5001BC333 /* main.m */; };
 		17E641560EF01EF6001BC333 /* SPCustomQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E641490EF01EF6001BC333 /* SPCustomQuery.m */; };
 		17E641570EF01EF6001BC333 /* SPAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E6414B0EF01EF6001BC333 /* SPAppController.m */; };
-		17E641580EF01EF6001BC333 /* SPGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E6414D0EF01EF6001BC333 /* SPGrowlController.m */; };
+		17E641580EF01EF6001BC333 /* SPNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E6414D0EF01EF6001BC333 /* SPNotificationController.m */; };
 		17E641590EF01EF6001BC333 /* SPTableContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E6414F0EF01EF6001BC333 /* SPTableContent.m */; };
 		17E6415A0EF01EF6001BC333 /* SPDatabaseDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E641510EF01EF6001BC333 /* SPDatabaseDocument.m */; };
 		17E6415B0EF01EF6001BC333 /* SPDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E641530EF01EF6001BC333 /* SPDataImport.m */; };
@@ -125,7 +125,6 @@
 		17E641D20EF02036001BC333 /* grabber-vertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E6419E0EF02036001BC333 /* grabber-vertical.png */; };
 		17E641F20EF02036001BC333 /* toolbar-switch-to-structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E641BE0EF02036001BC333 /* toolbar-switch-to-structure.png */; };
 		17E641F30EF02036001BC333 /* toolbar-switch-to-table-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E641BF0EF02036001BC333 /* toolbar-switch-to-table-info.png */; };
-		17E641FA0EF02088001BC333 /* Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = 17E641F50EF02088001BC333 /* Growl Registration Ticket.growlRegDict */; };
 		17E641FC0EF02088001BC333 /* sequel-pro.scriptSuite in Resources */ = {isa = PBXBuildFile; fileRef = 17E641F70EF02088001BC333 /* sequel-pro.scriptSuite */; };
 		17E641FD0EF02088001BC333 /* sequel-pro.scriptTerminology in Resources */ = {isa = PBXBuildFile; fileRef = 17E641F80EF02088001BC333 /* sequel-pro.scriptTerminology */; };
 		17E6420A0EF020CB001BC333 /* DBView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17E642060EF020CB001BC333 /* DBView.xib */; };
@@ -162,8 +161,6 @@
 		4D90B79E101E0CF200D116A1 /* SPUserManager.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 4D90B79B101E0CF200D116A1 /* SPUserManager.xcdatamodel */; };
 		4D90B79F101E0CF200D116A1 /* SPUserMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D90B79D101E0CF200D116A1 /* SPUserMO.m */; };
 		4D90B7A2101E0D1500D116A1 /* UserManagerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D90B7A0101E0D1500D116A1 /* UserManagerView.xib */; };
-		4DECC3370EC2A170008D359E /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DECC3340EC2A170008D359E /* Growl.framework */; };
-		4DECC4910EC2B436008D359E /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 4DECC3340EC2A170008D359E /* Growl.framework */; };
 		50082B3D1BF7CD2100746ECC /* ICUTemplateMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 296DC8AC0F909194002A3258 /* ICUTemplateMatcher.m */; };
 		50082B3E1BF7CD2100746ECC /* NSArray_DeepMutableCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 296DC8AE0F909194002A3258 /* NSArray_DeepMutableCopy.m */; };
 		50082B3F1BF7CD2100746ECC /* NSDictionary_DeepMutableCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 296DC8B10F909194002A3258 /* NSDictionary_DeepMutableCopy.m */; };
@@ -611,7 +608,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				58B907FB11BDA5A9000826E5 /* PSMTabBar.framework in Copy Frameworks */,
-				4DECC4910EC2B436008D359E /* Growl.framework in Copy Frameworks */,
 				58C6C71F11FBB18000A3F5E9 /* UniversalDetector.framework in Copy Frameworks */,
 				58DC0D7C12932AB200B76DA5 /* ShortcutRecorder.framework in Copy Frameworks */,
 				586AAB9314FAD40D007F82BF /* QueryKit.framework in Copy Frameworks */,
@@ -790,8 +786,8 @@
 		17E641490EF01EF6001BC333 /* SPCustomQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPCustomQuery.m; sourceTree = "<group>"; };
 		17E6414A0EF01EF6001BC333 /* SPAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAppController.h; sourceTree = "<group>"; };
 		17E6414B0EF01EF6001BC333 /* SPAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAppController.m; sourceTree = "<group>"; };
-		17E6414C0EF01EF6001BC333 /* SPGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPGrowlController.h; sourceTree = "<group>"; };
-		17E6414D0EF01EF6001BC333 /* SPGrowlController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPGrowlController.m; sourceTree = "<group>"; };
+		17E6414C0EF01EF6001BC333 /* SPNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPNotificationController.h; sourceTree = "<group>"; };
+		17E6414D0EF01EF6001BC333 /* SPNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPNotificationController.m; sourceTree = "<group>"; };
 		17E6414E0EF01EF6001BC333 /* SPTableContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPTableContent.h; sourceTree = "<group>"; };
 		17E6414F0EF01EF6001BC333 /* SPTableContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPTableContent.m; sourceTree = "<group>"; };
 		17E641500EF01EF6001BC333 /* SPDatabaseDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDatabaseDocument.h; sourceTree = "<group>"; };
@@ -816,7 +812,6 @@
 		17E6419E0EF02036001BC333 /* grabber-vertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grabber-vertical.png"; sourceTree = "<group>"; };
 		17E641BE0EF02036001BC333 /* toolbar-switch-to-structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar-switch-to-structure.png"; sourceTree = "<group>"; };
 		17E641BF0EF02036001BC333 /* toolbar-switch-to-table-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar-switch-to-table-info.png"; sourceTree = "<group>"; };
-		17E641F50EF02088001BC333 /* Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
 		17E641F60EF02088001BC333 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plists/Info.plist; sourceTree = "<group>"; };
 		17E641F70EF02088001BC333 /* sequel-pro.scriptSuite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptSuite; path = "sequel-pro.scriptSuite"; sourceTree = "<group>"; };
 		17E641F80EF02088001BC333 /* sequel-pro.scriptTerminology */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.scriptTerminology; path = "sequel-pro.scriptTerminology"; sourceTree = "<group>"; };
@@ -882,7 +877,6 @@
 		4D90B79C101E0CF200D116A1 /* SPUserMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPUserMO.h; sourceTree = "<group>"; };
 		4D90B79D101E0CF200D116A1 /* SPUserMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPUserMO.m; sourceTree = "<group>"; };
 		4D90B7A1101E0D1500D116A1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/UserManagerView.xib; sourceTree = "<group>"; };
-		4DECC3340EC2A170008D359E /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
 		500C1F901BFB5F9F0095DC7F /* SPPrivilegesMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPPrivilegesMO.h; sourceTree = "<group>"; };
 		500C1F911BFB5F9F0095DC7F /* SPPrivilegesMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPPrivilegesMO.m; sourceTree = "<group>"; };
 		500DA4B51BEFF877000773FE /* SPComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPComboBoxCell.h; sourceTree = "<group>"; };
@@ -1328,7 +1322,6 @@
 				17AED4161888BD67008E380F /* Security.framework in Frameworks */,
 				296DC8BF0F9091DF002A3258 /* libicucore.dylib in Frameworks */,
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
-				4DECC3370EC2A170008D359E /* Growl.framework in Frameworks */,
 				584D877815140F7B00F24774 /* SPMySQL.framework in Frameworks */,
 				586AAB1514FAD3AF007F82BF /* QueryKit.framework in Frameworks */,
 				296DC89F0F8FD336002A3258 /* WebKit.framework in Frameworks */,
@@ -1352,7 +1345,6 @@
 				58475685120A065B0057631F /* CoreFoundation.framework */,
 				58B9077D11BD9B64000826E5 /* Carbon.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
-				4DECC3340EC2A170008D359E /* Growl.framework */,
 				296DC89E0F8FD336002A3258 /* WebKit.framework */,
 				58C6C71511FBB17200A3F5E9 /* UniversalDetector.framework */,
 				584756B4120A06740057631F /* CoreServices.framework */,
@@ -1596,8 +1588,8 @@
 		173E70D5107FF7AF008733C9 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				17E6414C0EF01EF6001BC333 /* SPGrowlController.h */,
-				17E6414D0EF01EF6001BC333 /* SPGrowlController.m */,
+				17E6414C0EF01EF6001BC333 /* SPNotificationController.h */,
+				17E6414D0EF01EF6001BC333 /* SPNotificationController.m */,
 				589235311020C1230011DE00 /* SPHistoryController.h */,
 				589235301020C1230011DE00 /* SPHistoryController.m */,
 				5806B76211A991EC00813A88 /* SPDocumentController.h */,
@@ -1908,7 +1900,6 @@
 				17F90E2B1210B34900274C98 /* Credits.rtf */,
 				17CC993A10B4C9C80034CD7A /* License.rtf */,
 				AA1000042611100000000001 /* startup-sound.wav */,
-				17E641F50EF02088001BC333 /* Growl Registration Ticket.growlRegDict */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2857,7 +2848,6 @@
 				17E641F30EF02036001BC333 /* toolbar-switch-to-table-info.png in Resources */,
 				17E6420A0EF020CB001BC333 /* DBView.xib in Resources */,
 				BA6B043D20A4FB0B00B012E1 /* button_filter_active@2x.png in Resources */,
-				17E641FA0EF02088001BC333 /* Growl Registration Ticket.growlRegDict in Resources */,
 				17E641FC0EF02088001BC333 /* sequel-pro.scriptSuite in Resources */,
 				3876E1501CC0B26000D85154 /* button_add@2x.png in Resources */,
 				17E641FD0EF02088001BC333 /* sequel-pro.scriptTerminology in Resources */,
@@ -3154,7 +3144,7 @@
 				17E641570EF01EF6001BC333 /* SPAppController.m in Sources */,
 				AA1000032611100000000001 /* SPWelcomeController.m in Sources */,
 				507FF1121BBCC57600104523 /* SPFunctions.m in Sources */,
-				17E641580EF01EF6001BC333 /* SPGrowlController.m in Sources */,
+				17E641580EF01EF6001BC333 /* SPNotificationController.m in Sources */,
 				17E641590EF01EF6001BC333 /* SPTableContent.m in Sources */,
 				17E6415A0EF01EF6001BC333 /* SPDatabaseDocument.m in Sources */,
 				17E6415B0EF01EF6001BC333 /* SPDataImport.m in Sources */,
