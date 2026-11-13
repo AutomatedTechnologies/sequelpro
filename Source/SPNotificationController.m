@@ -1,5 +1,5 @@
 //
-//  SPGrowlController.m
+//  SPNotificationController.m
 //  sequel-pro
 //
 //  Created by Stuart Connolly (stuconnolly.com) on Nov 28, 2008.
@@ -28,37 +28,45 @@
 //
 //  More info at <https://github.com/sequelpro/sequelpro>
 
-#import "SPGrowlController.h"
+#import "SPNotificationController.h"
 #import "SPDatabaseDocument.h"
 #import "SPWindowController.h"
 #import "SPAppController.h"
 
 #include <mach/mach_time.h>
 
-static SPGrowlController *sharedGrowlController = nil;
+static SPNotificationController *sharedNotificationController = nil;
 
 @class SPWindowController;
 
-@implementation SPGrowlController
+// Notification intermediary excision (SDS-10 10.6, second half):
+// SPNotificationController keeps its posting signatures (internal
+// call sites are unchanged in shape) but conforms to the native
+// NSUserNotificationCenterDelegate in this extension only -- no
+// third-party notification protocol, framework, or helper app remains.
+@interface SPNotificationController () <NSUserNotificationCenterDelegate>
+@end
+
+@implementation SPNotificationController
 
 /**
- * Returns the shared Growl controller.
+ * Returns the shared notification controller.
  */
-+ (SPGrowlController *)sharedGrowlController
++ (SPNotificationController *)sharedNotificationController
 {
     @synchronized(self) {
-        if (sharedGrowlController == nil) {
-            sharedGrowlController = [[super allocWithZone:NULL] init];
+        if (sharedNotificationController == nil) {
+            sharedNotificationController = [[super allocWithZone:NULL] init];
         }
     }
     
-    return sharedGrowlController;
+    return sharedNotificationController;
 }
 
 + (id)allocWithZone:(NSZone *)zone
 {    
     @synchronized(self) {
-		return [[self sharedGrowlController] retain]; 
+		return [[self sharedNotificationController] retain]; 
     } 
 	
 	return nil;
@@ -67,7 +75,11 @@ static SPGrowlController *sharedGrowlController = nil;
 - (id)init
 {
     if ((self = [super init])) {
-        [GrowlApplicationBridge setGrowlDelegate:self];
+        // Register nothing with any intermediary: install this
+        // controller as the NSUserNotificationCenter delegate so
+        // banners present while the app is active and clicks are
+        // delivered back to the posting bundle.
+        [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 		
 		timingNotificationName = nil;
 		timingNotificationStart = 0;
@@ -81,7 +93,7 @@ static SPGrowlController *sharedGrowlController = nil;
 #pragma mark -
 
 /**
- * Posts a Growl notification using the supplied details and default values.
+ * Posts a notification using the supplied details and default values.
  * Calls the notification after a tiny delay to allow isKeyWindow to have updated
  * after tasks.
  */
@@ -105,7 +117,7 @@ static SPGrowlController *sharedGrowlController = nil;
 }
 
 /**
- * Posts a Growl notification, using a NSDictionary to contain all arguments.
+ * Posts a notification, using a NSDictionary to contain all arguments.
  * Allows calling either with an NSThread or afterDelay as it only accepts a
  * single argument.
  */
@@ -122,7 +134,7 @@ static SPGrowlController *sharedGrowlController = nil;
 }
 
 /**
- * Posts a Growl notification using the supplied details and effectively ignoring the default values.
+ * Posts a notification using the supplied details and effectively ignoring the default values.
  */
 - (void)notifyWithTitle:(NSString *)title description:(NSString *)description document:(SPDatabaseDocument *)document notificationName:(NSString *)name iconData:(NSData *)data priority:(NSInteger)priority isSticky:(BOOL)sticky clickContext:(id)clickContext
 {
@@ -148,22 +160,62 @@ static SPGrowlController *sharedGrowlController = nil;
 	}
 
     // Post notification only if preference is set and visibility has been confirmed
-	if (postNotification && [[NSUserDefaults standardUserDefaults] boolForKey:SPGrowlEnabled]) {
-		[GrowlApplicationBridge notifyWithTitle:title
-									description:description
-							   notificationName:name
-									   iconData:data
-									   priority:(int)priority
-									   isSticky:sticky
-								   clickContext:clickContext];
+	if (postNotification && [[NSUserDefaults standardUserDefaults] boolForKey:SPNotificationsEnabled]) {
+		// Native posting (SDS-10 10.6): the notification is delivered
+		// by this process, from the main bundle. Notification Center
+		// attributes it to this bundle by construction; the title is
+		// the ship name read from the main bundle's own Info.plist at
+		// runtime, the notification type is carried as the subtitle,
+		// and the supplied description is the body -- the same six
+		// notification types the registration ticket used to declare
+		// (Connected, Disconnected, Import Finished, Export Finished,
+		// Syntax Copied, Query Finished), now with no intermediary.
+		NSUserNotification *notification = [[NSUserNotification alloc] init];
+		notification.title = [[self class] notificationApplicationName];
+		notification.subtitle = title;
+		notification.informativeText = description;
+		if ([clickContext isKindOfClass:[NSDictionary class]]) {
+			notification.userInfo = (NSDictionary *)clickContext;
+		}
+		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+		[notification release];
 	}
 }
 
-/**
- * React to a click on the notification.
- */
-- (void)growlNotificationWasClicked:(NSDictionary *)clickContext
+// SDS-10 10.6 (notification identity): the banner title is read
+// from the main bundle's own Info.plist at runtime (CFBundleName,
+// then CFBundleDisplayName) -- never a hardcoded upstream name, and
+// never a name asserted to a third-party intermediary: posting is
+// native (above), so Notification Center attributes the
+// notification to this bundle
+// (com.detroitautomationacademy.sequelpro) by construction. The
+// literal fallback covers only a bundle with no name keys at all.
++ (NSString *)notificationApplicationName
 {
+	NSString *name = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+	if (![name length]) {
+		name = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+	}
+	if (![name length]) {
+		name = @"Sequel Pro";
+	}
+	return name;
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
+{
+	return YES;
+}
+
+/**
+ * React to a click on the notification (native center delegate;
+ * the document hash travels in the notification's userInfo, the
+ * same click context the old intermediary path carried).
+ */
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
+{
+	NSDictionary *clickContext = [notification userInfo];
+	[center removeDeliveredNotification:notification];
 	if (clickContext && [clickContext objectForKey:@"notificationDocumentHash"]) {
 		NSUInteger documentHash = [[clickContext objectForKey:@"notificationDocumentHash"] unsignedIntegerValue];
 

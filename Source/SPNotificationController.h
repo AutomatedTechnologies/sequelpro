@@ -1,5 +1,5 @@
 //
-//  SPGrowlController.h
+//  SPNotificationController.h
 //  sequel-pro
 //
 //  Created by Stuart Connolly (stuconnolly.com) on Nov 28, 2008.
@@ -27,14 +27,18 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 //  More info at <https://github.com/sequelpro/sequelpro>
-
-#import <Growl/Growl.h>
+//
+//  Notification intermediary excision (SDS-10 10.6.5; 2026-11-13):
+//  this controller no longer imports or links any third-party
+//  notification framework. The class keeps every posting signature
+//  the call sites use; the implementation posts natively via
+//  NSUserNotificationCenter from the main bundle.
 
 #import "SPSingleton.h"
 
 @class SPDatabaseDocument;
 
-@interface SPGrowlController : SPSingleton <GrowlApplicationBridgeDelegate>
+@interface SPNotificationController : SPSingleton
 {
 	NSString *timingNotificationName;
 	
@@ -44,7 +48,7 @@
 }
 
 // Singleton controller
-+ (SPGrowlController *)sharedGrowlController;
++ (SPNotificationController *)sharedNotificationController;
 
 // Post notification
 - (void)notifyWithTitle:(NSString *)title 
@@ -62,9 +66,6 @@
 			   priority:(NSInteger)priority 
 			   isSticky:(BOOL)sticky 
 		   clickContext:(id)clickContext;
-
-// Receive notification click
-- (void)growlNotificationWasClicked:(NSDictionary *)clickContext;
 
 // Timing functions
 - (void)setVisibilityForNotificationName:(NSString *)name;
