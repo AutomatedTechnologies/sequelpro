@@ -25,6 +25,35 @@ jobs:
         run: |
           xcodebuild -project sequel-pro.xcodeproj -list
 
+
+      - name: Verify notification identity + intermediary excision source (SDS-10 10.6)
+        run: |
+          # SDS-10 10.6 both halves. First half: the attributed name is
+          # the ship name, read from the main bundle at runtime.
+          # Second half (10.6.5): NO third-party notification
+          # intermediary -- Growl (separate app, retired 2020,
+          # self-asserted unauthenticated sender identity) is excised;
+          # posting is native NSUserNotificationCenter from the main
+          # bundle via SPNotificationController.
+          F="Source/SPNotificationController.m"
+          H="Source/SPNotificationController.h"
+          test -f "$F" && test -f "$H"
+          grep -q 'NSUserNotificationCenter' "$F"
+          grep -q 'deliverNotification' "$F"
+          grep -q 'notificationApplicationName' "$F"
+          grep -q 'CFBundleName' "$F"
+          if grep -rq 'Growl' Source/ Interfaces/English.lproj/Preferences.xib Resources/Plists/ sequel-pro.xcodeproj/project.pbxproj; then echo "FAIL: Growl remnant in app source/project/plists"; exit 1; fi
+          for pat in 'GrowlApplicationBridge' 'GNTP' 'applicationNameForGrowl' 'registrationDictionaryForGrowl' 'GROWL_IS_READY'; do
+            if grep -rq "$pat" Source/ sequel-pro.xcodeproj/; then echo "FAIL: intermediary remnant: $pat"; exit 1; fi
+          done
+          if [ -e "Frameworks/Growl.framework" ]; then echo "FAIL: Frameworks/Growl.framework still in tree"; exit 1; fi
+          if [ -e "Resources/Growl Registration Ticket.growlRegDict" ]; then echo "FAIL: Growl registration ticket still in tree"; exit 1; fi
+          NI=$(/usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance:NotificationIdentity" Resources/Plists/Info.plist)
+          CD=$(/usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance:Date" Resources/Plists/Info.plist)
+          echo "Conformance source check: NotificationIdentity=$NI Date=$CD"
+          test "$NI" = "true" && test "$CD" = "2026-11-13"
+          echo "Notification identity + excision source gate: PASS (native posting, ship name from main bundle, no intermediary)"
+
       - name: Apply CI source patch (SPLogger struct direct -> dirent)
         run: |
           # SPLogger.m uses the pre-modern `struct direct` spelling (3 sites:
@@ -72,6 +101,10 @@ jobs:
           cp LICENSE-ACADEMY.txt NOTICE.txt "$APP/Contents/Resources/"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$PLIST"
           /usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance" "$PLIST"
+          NI=$(/usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance:NotificationIdentity" "$PLIST")
+          CD=$(/usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.conformance:Date" "$PLIST")
+          echo "Conformance: NotificationIdentity=$NI Date=$CD"
+          test "$NI" = "true" && test "$CD" = "2026-11-13"
           /usr/libexec/PlistBuddy -c "Print :com.detroitautomationacademy.audit" "$PLIST"
           test -f "$APP/Contents/Resources/startup-sound.wav"
           shasum -a 256 "$APP/Contents/Resources/startup-sound.wav"
@@ -86,7 +119,21 @@ jobs:
           test -n "$APP"
           test -x "$APP/Contents/MacOS/Sequel Pro"
           file "$APP/Contents/MacOS/Sequel Pro"
-          ditto -c -k --keepParent "$APP" SequelPro-test.zip
+          # Intermediary excision assertion (SDS-10 10.6.5): the shipped
+          # bundle carries no Growl framework or registration ticket,
+          # and the executable neither links nor references the
+          # intermediary -- while the native center path is present.
+          test ! -e "$APP/Contents/Frameworks/Growl.framework"
+          test ! -e "$APP/Contents/Resources/Growl Registration Ticket.growlRegDict"
+          test -z "$(find "$APP" -iname '*growl*' -print -quit)"
+          if otool -L "$APP/Contents/MacOS/Sequel Pro" | grep -qi growl; then echo "FAIL: binary links Growl"; exit 1; fi
+          if strings "$APP/Contents/MacOS/Sequel Pro" | grep -q 'Growl'; then echo "FAIL: binary references Growl"; exit 1; fi
+          if strings "$APP/Contents/MacOS/Sequel Pro" | grep -q 'GNTP'; then echo "FAIL: binary references GNTP"; exit 1; fi
+          if strings "$APP/Contents/MacOS/Sequel Pro" | grep -q 'applicationNameForGrowl'; then echo "FAIL: binary references applicationNameForGrowl"; exit 1; fi
+          strings "$APP/Contents/MacOS/Sequel Pro" | grep -q 'NSUserNotificationCenter'
+          strings "$APP/Contents/MacOS/Sequel Pro" | grep -q 'SPNotificationController'
+          echo "Growl excision bundle assertion: PASS (no framework, no ticket, no link, no intermediary strings; native center present)"
+                    ditto -c -k --keepParent "$APP" SequelPro-test.zip
           ls -la SequelPro-test.zip
           shasum -a 256 SequelPro-test.zip
 
@@ -104,5 +151,5 @@ jobs:
         run: |
           gh release create sequelpro-test-${{ github.run_number }} SequelPro-test.zip \
             --prerelease \
-            --title "Sequel Pro — Academy test build ${{ github.run_number }} (SDS10-T4 conformance)" \
-            --notes "SDS10-T4 conformance build: SDS-8 welcome screen (SPWelcomeController — AppIcon composition, version line runtime-read from the bundle Info.plist CFBundleVersion) + byte-identical startup-sound.wav (SHA-256 07a113244c6b432b22954a089ce519bd239311b14a48f26ae85214ed8c25b09a) + com.detroitautomationacademy.conformance key (SDS-10: Logo/VersionAtStartup/StartupSound/MenuBar all true). Academy bundle ID com.detroitautomationacademy.sequelpro + complete Academy audit entry in the app Info.plist. Database layer unchanged in this tranche. NOT rig-verified on High Sierra. Known limitation: MySQL connector is the bundled EOL 5.5.56 client — no caching_sha2_password. Findings F-01/F-02/F-03 remain OPEN. NOT A RELEASE."
+            --title "Sequel Pro — Academy test build ${{ github.run_number }} (SDS-10 10.6 notification intermediary excision)" \
+            --notes "Growl excision build (SDS-10 10.6, finding S-02): the retired third-party Growl notification intermediary is removed (framework, registration ticket, preference surface); SPNotificationController posts natively via NSUserNotificationCenter from the main bundle, banner title read from the bundle Info.plist at runtime, same six notification types; conformance key gains NotificationIdentity=true (Date 2026-11-13). Prior SDS10-T4 conformance retained:  SDS-8 welcome screen (SPWelcomeController — AppIcon composition, version line runtime-read from the bundle Info.plist CFBundleVersion) + byte-identical startup-sound.wav (SHA-256 07a113244c6b432b22954a089ce519bd239311b14a48f26ae85214ed8c25b09a) + com.detroitautomationacademy.conformance key (SDS-10: Logo/VersionAtStartup/StartupSound/MenuBar all true). Academy bundle ID com.detroitautomationacademy.sequelpro + complete Academy audit entry in the app Info.plist. Database layer unchanged in this tranche. NOT rig-verified on High Sierra. Known limitation: MySQL connector is the bundled EOL 5.5.56 client — no caching_sha2_password. Findings F-01/F-02/F-03 remain OPEN. NOT A RELEASE."
