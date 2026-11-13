@@ -32,7 +32,7 @@
 #import "SPUserMO.h"
 #import "SPPrivilegesMO.h"
 #import "ImageAndTextCell.h"
-#import "SPGrowlController.h"
+#import "SPNotificationController.h"
 #import "SPConnectionController.h"
 #import "SPServerSupport.h"
 #import "SPAlertSheets.h"

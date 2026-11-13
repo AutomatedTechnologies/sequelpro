@@ -32,7 +32,7 @@
 #import "SPCustomQuery.h"
 #import "SPSQLParser.h"
 #ifndef SP_CODA /* headers */
-#import "SPGrowlController.h"
+#import "SPNotificationController.h"
 #endif
 #import "SPDataCellFormatter.h"
 #import "SPDatabaseDocument.h"
@@ -666,9 +666,9 @@ typedef void (^QueryProgressHandler)(QueryProgress *);
 		// Notify listeners that a query has started
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThreadWithName:@"SMySQLQueryWillBePerformed" object:tableDocumentInstance];
 
-#ifndef SP_CODA /* growl */
+#ifndef SP_CODA /* notification */
 		// Start the notification timer to allow notifications to be shown even if frontmost for long queries
-		[[SPGrowlController sharedGrowlController] setVisibilityForNotificationName:@"Query Finished"];
+		[[SPNotificationController sharedNotificationController] setVisibilityForNotificationName:@"Query Finished"];
 #endif
 
 		// Reset the current table view as necessary to avoid redraw and reload issues.
@@ -963,10 +963,10 @@ typedef void (^QueryProgressHandler)(QueryProgress *);
 			// Notify any listeners that the query has completed
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThreadWithName:@"SMySQLQueryHasBeenPerformed" object:tableDocumentInstance];
 
-#ifndef SP_CODA /* growl */
-			// Perform the Growl notification for query completion
-			[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Query Finished"
-			                                               description:[NSString stringWithFormat:NSLocalizedString(@"%@",@"description for query finished growl notification"), [[errorText onMainThread] string]]
+#ifndef SP_CODA /* notification */
+			// Perform the notification for query completion
+			[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Query Finished"
+			                                               description:[NSString stringWithFormat:NSLocalizedString(@"%@",@"description for query finished notification"), [[errorText onMainThread] string]]
 			                                                  document:tableDocumentInstance
 			                                          notificationName:@"Query Finished"];
 #endif
@@ -993,10 +993,10 @@ typedef void (^QueryProgressHandler)(QueryProgress *);
 		//query finished
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThreadWithName:@"SMySQLQueryHasBeenPerformed" object:tableDocumentInstance];
 
-#ifndef SP_CODA /* growl */
-		// Query finished Growl notification
-		[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Query Finished"
-		                                               description:[NSString stringWithFormat:NSLocalizedString(@"%@",@"description for query finished growl notification"), [[errorText onMainThread] string]]
+#ifndef SP_CODA /* notification */
+		// Query finished notification
+		[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Query Finished"
+		                                               description:[NSString stringWithFormat:NSLocalizedString(@"%@",@"description for query finished notification"), [[errorText onMainThread] string]]
 		                                                  document:tableDocumentInstance
 		                                          notificationName:@"Query Finished"];
 #endif

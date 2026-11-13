@@ -112,7 +112,7 @@ NSString *SPFilterTableDefaultOperatorLastItems  = @"FilterTableDefaultOperatorL
 NSString *SPFavorites                            = @"favorites";
 
 // Notifications Prefpane
-NSString *SPGrowlEnabled                         = @"GrowlEnabled";
+NSString *SPNotificationsEnabled                         = @"NotificationsEnabled";
 NSString *SPShowNoAffectedRowsError              = @"ShowNoAffectedRowsError";
 NSString *SPConsoleEnableLogging                 = @"ConsoleEnableLogging";
 NSString *SPConsoleEnableInterfaceLogging        = @"ConsoleEnableInterfaceLogging";

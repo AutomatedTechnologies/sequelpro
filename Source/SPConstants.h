@@ -327,7 +327,7 @@ extern NSString *SPFilterTableDefaultOperatorLastItems;
 extern NSString *SPFavorites;
 
 // Notifications Prefpane
-extern NSString *SPGrowlEnabled;
+extern NSString *SPNotificationsEnabled;
 extern NSString *SPShowNoAffectedRowsError;
 extern NSString *SPConsoleEnableLogging;
 extern NSString *SPConsoleEnableInterfaceLogging;

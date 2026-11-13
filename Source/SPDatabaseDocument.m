@@ -39,7 +39,7 @@
 #import "SPCustomQuery.h"
 #import "SPDataImport.h"
 #import "ImageAndTextCell.h"
-#import "SPGrowlController.h"
+#import "SPNotificationController.h"
 #import "SPExportController.h"
 #import "SPSplitView.h"
 #import "SPQueryController.h"
@@ -529,7 +529,7 @@ static BOOL isOSAtLeast10_14;
 #ifndef SP_CODA
 	[self updateWindowTitle:self];
 	
-	// Connected Growl notification
+	// Connected notification
 	NSString *serverDisplayName = nil;
 	if ([parentWindowController selectedTableDocument] == self) {
 		serverDisplayName = [parentWindow title];
@@ -537,8 +537,8 @@ static BOOL isOSAtLeast10_14;
 		serverDisplayName = [parentTabViewItem label];
 	}
 
-	[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Connected"
-	                                               description:[NSString stringWithFormat:NSLocalizedString(@"Connected to %@", @"description for connected growl notification"), serverDisplayName]
+	[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Connected"
+	                                               description:[NSString stringWithFormat:NSLocalizedString(@"Connected to %@", @"description for connected notification"), serverDisplayName]
 	                                                  document:self
 	                                          notificationName:@"Connected"];
 
@@ -1958,9 +1958,9 @@ static BOOL isOSAtLeast10_14;
 		[pb declareTypes:@[NSStringPboardType] owner:self];
 		[pb setString:createSyntax forType:NSStringPboardType];
 
-		// Table syntax copied Growl notification
-		[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Syntax Copied"
-		                                               description:[NSString stringWithFormat:NSLocalizedString(@"Syntax for %@ table copied", @"description for table syntax copied growl notification"), [self table]]
+		// Table syntax copied notification
+		[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Syntax Copied"
+		                                               description:[NSString stringWithFormat:NSLocalizedString(@"Syntax for %@ table copied", @"description for table syntax copied notification"), [self table]]
 		                                                  document:self
 		                                          notificationName:@"Syntax Copied"];
 
@@ -2466,9 +2466,9 @@ static BOOL isOSAtLeast10_14;
 		[pb declareTypes:@[NSStringPboardType] owner:self];
 		[pb setString:createSyntax forType:NSStringPboardType];
 
-		// Table syntax copied Growl notification
-		[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Syntax Copied"
-		                                               description:[NSString stringWithFormat:NSLocalizedString(@"Syntax for %@ table copied", @"description for table syntax copied growl notification"), [self table]]
+		// Table syntax copied notification
+		[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Syntax Copied"
+		                                               description:[NSString stringWithFormat:NSLocalizedString(@"Syntax for %@ table copied", @"description for table syntax copied notification"), [self table]]
 		                                                  document:self
 		                                          notificationName:@"Syntax Copied"];
 	}
@@ -2660,10 +2660,10 @@ static BOOL isOSAtLeast10_14;
 	[mySQLConnection disconnect];
 	_isConnected = NO;
 
-#ifndef SP_CODA /* growl */
-	// Disconnected Growl notification
-	[[SPGrowlController sharedGrowlController] notifyWithTitle:@"Disconnected"
-	                                               description:[NSString stringWithFormat:NSLocalizedString(@"Disconnected from %@", @"description for disconnected growl notification"), [parentTabViewItem label]]
+#ifndef SP_CODA /* notification */
+	// Disconnected notification
+	[[SPNotificationController sharedNotificationController] notifyWithTitle:@"Disconnected"
+	                                               description:[NSString stringWithFormat:NSLocalizedString(@"Disconnected from %@", @"description for disconnected notification"), [parentTabViewItem label]]
 	                                                  document:self
 	                                          notificationName:@"Disconnected"];
 #endif
